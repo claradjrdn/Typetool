@@ -7,12 +7,11 @@
 	<meta name="viewport" content="initial-scale=1.0, width=device-width"/>
 	<!-- Note that the internal development server rewrites the JavaScript URL below to build/opentype.js -->
 	<script type="text/javascript" src="dist/opentype.js"></script>
-	<script type="text/javascript" src="scripts/objects.js"></script>
-	<script type="text/javascript" src="scripts/main.js"></script>
+
 	<link rel="stylesheet" href="base.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
-<body class="body" onload="valueChanged()" id="body">
+<body class="body" onload="getValue()" id="body">
 	<div class="canvas">
 		<canvas id="text-render" width="1020" height="290"></canvas>
 	</div>
@@ -63,10 +62,6 @@
 				<group>
 					<!--<h2>Shapes</h2>-->
 					<div class="input__shape-item">
-						<input type="radio" name="aspect" value="mysteriousAspect" id="mysteriousAspect">
-						<label for="mysteriousAspect">Mysterious</label>
-					</div>
-					<div class="input__shape-item">
 						<input type="radio" name="aspect" value="circleOrderAspect" id="circleOrderAspect">
 						<label for="circleOrderAspect">Circle</label>
 					</div>
@@ -91,10 +86,6 @@
 						<label for="fireAspect">Fire</label>
 					</div>
 					<div class="input__shape-item">
-						<input type="radio" name="aspect" value="fireSpeedAspect" id="fireSpeedAspect">
-						<label for="fireSpeedAspect">Fire speed</label>
-					</div>
-					<div class="input__shape-item">
 						<input type="radio" name="aspect" value="letterAspect" id="letterAspect">
 						<label for="letterAspect">Letter</label>
 					</div>
@@ -109,19 +100,19 @@
 		</div>
 		<div class="input__color-mode criteria col-md-4">
 			<form onclick="renderText()">
-				<input type="radio" name="gradient" value="singlecolor" id="singlecolor" checked> Single color
-				<input type="radio" name="gradient" value="gradientletter" id="gradientletter" checked> Gradient on letter
-				<input type="radio" name="gradient" value="gradientshape" id="gradientshape" checked> Gradient on shape
+				<input type="radio" name="gradient" value="singlecolor" id="singlecolor"> Single color
+				<input type="radio" name="gradient" value="gradientletter" id="gradientletter"> Gradient on letter
+				<input type="radio" name="gradient" value="gradientshape" id="gradientshape"> Gradient on shape
 				<input type="radio" name="gradient" value="twocolorsgradient" id="twocolorsgradient" checked> 2 colors gradient
-				<input type="radio" name="gradient" value="multicolorgradient" id="multicolorgradient" checked> Multicolor gradient // Carnaval
+				<input type="radio" name="gradient" value="multicolorgradient" id="multicolorgradient"> Multicolor gradient // Carnaval
 			</form>
 		</div>
 		<div class="input__color-choice criteria col-md-3">
 			<form>
 				<label><!--Color-->
-					<input type="range" min="0" max="360" step="1" value="323" id="color-value-range" oninput=" valueChanged()">
+					<input type="range" min="0" max="360" step="1" value="323" id="color-value-range" oninput=" getValue()">
 					<span id="color-value">180</span>
-					<input type="range" min="0" max="360" step="1" value="180" id="secondcolor-value-range" oninput=" valueChanged()">
+					<input type="range" min="0" max="360" step="1" value="180" id="secondcolor-value-range" oninput=" getValue()">
 					<span id="secondcolor-value">180</span>
 				</label>
 			</form>
@@ -129,346 +120,14 @@
 		<div class="input__position criteria col-md-3">
 			<form>
 				<label><!--Position-->
-					<input type="range" min="0" max="50" step="1" value="0" id="position-value-range" oninput=" valueChanged()">
+					<input type="range" min="0" max="50" step="1" value="0" id="position-value-range" oninput=" getValue()">
 					<span id="position-value">0</span>
 				</label>
 			</form>
 		</div>			
 	</article>
-<script type="text/javascript">
-var fontFileName = 'fonts/kust.otf';
-var colorValue = 323, positionValue = 50;
-var secondColorValue = 180;
-var colorValueSlider = document.getElementById("color-value-range");
-var secondColorValueSlider = document.getElementById("secondcolor-value-range");
-var positionValueSlider = document.getElementById("position-value-range");
-var diffusionRangeSlider = document.getElementById("position-value");
-
-function onFontLoaded(font) {
-	window.font = font;
-	renderText();
-}
-
-// =============== recuperation des valeurs des curseurs & affichage de ces valeurs
-
-function valueChanged() {
-	colorValue = colorValueSlider.value;
-	secondColorValue = secondColorValueSlider.value;
-	positionValue = positionValueSlider.value;
-	diffusionRange = positionValueSlider.value;
-	document.getElementById('color-value').innerHTML = '' + colorValue;
-	document.getElementById('secondcolor-value').innerHTML = '' + secondColorValue;
-	document.getElementById('position-value').innerHTML = '' + positionValue;
-    	// document.getElementById('text-render').style.backgroundColor = "hsl("+ colorValue+",82%, 95%)";
-    	// document.getElementById('body').style.backgroundColor = "hsl("+ colorValue+",82%, 95%)";
-    	renderText();
-}
-//================================================================
-
-function renderText() {
-	if (document.getElementById('bruxFont').checked == true) {
-		fontFileName = 'fonts/bruxFont.otf';
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = true;
-		document.getElementById('fireAspect').disabled = true;
-		document.getElementById('fireSpeedAspect').disabled = true;
-		document.getElementById('letterAspect').disabled = true;
-	}else if (document.getElementById('garamondFont').checked == true) {
-		fontFileName = 'fonts/garamondFont.ttf';
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = false;
-		document.getElementById('fireAspect').disabled = true;
-		document.getElementById('fireSpeedAspect').disabled = true;
-		document.getElementById('letterAspect').disabled = false;
-	}else if (document.getElementById('kustFont').checked == true) {
-		fontFileName = 'fonts/kustFont.otf';
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = true;
-		document.getElementById('fireAspect').disabled = false;
-		document.getElementById('fireSpeedAspect').disabled = false;
-		document.getElementById('letterAspect').disabled = false;
-	}else if (document.getElementById('walterFont').checked == true) {
-		fontFileName = 'fonts/walterFont.ttf';
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = true;
-		document.getElementById('fireAspect').disabled = true;
-		document.getElementById('fireSpeedAspect').disabled = true;
-		document.getElementById('letterAspect').disabled = false;
-	}else if (document.getElementById('baskervilleFont').checked == true) {
-		fontFileName = 'fonts/baskervilleFont.ttf';
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = false;
-		document.getElementById('fireAspect').disabled = false;
-		document.getElementById('fireSpeedAspect').disabled = false;
-		document.getElementById('letterAspect').disabled = false;
-	}else if (document.getElementById('cooperFont').checked == true) {
-		fontFileName = 'fonts/cooperFont.ttf';
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = false;
-		document.getElementById('fireAspect').disabled = false;
-		document.getElementById('fireSpeedAspect').disabled = false;
-		document.getElementById('letterAspect').disabled = false;
-	}else if (document.getElementById('londonFont').checked == true) {
-		fontFileName = 'fonts/londonFont.ttf';
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = false;
-		document.getElementById('fireAspect').disabled = false;
-		document.getElementById('fireSpeedAspect').disabled = false;
-		document.getElementById('letterAspect').disabled = false;
-	};
-
-	//if font loaded with button
-	if ((document.getElementById('bruxFont').checked == false)
-	   &&(document.getElementById('garamondFont').checked == false)
-	   &&(document.getElementById('kustFont').checked == false)
-	   &&(document.getElementById('walterFont').checked == false)
-	   &&(document.getElementById('baskervilleFont').checked == false)
-	   &&(document.getElementById('londonFont').checked == false)
-	   &&(document.getElementById('cooperFont').checked == false)) {
-		
-		document.getElementById('circleOrderAspect').disabled = false;
-		document.getElementById('circleDisorderAspect').disabled = false;
-		document.getElementById('lineOrderAspect').disabled = false;
-		document.getElementById('lineDisorderAspect').disabled = false;
-		document.getElementById('lineAngleAspect').disabled = false;
-		document.getElementById('fireAspect').disabled = false;
-		document.getElementById('fireSpeedAspect').disabled = false;
-		document.getElementById('letterAspect').disabled = false;
-		visualTreatment(font);
-
-	}else{ //if font choosed in the list
-		opentype.load(fontFileName, function (err, font) {
-			if (err) {
-				alert('Font could not be loaded: ' + err);
-			} else {
-				document.getElementById('file').value = '';
-				visualTreatment(font);
-			}
-		});
-	};
-}
-
-function visualTreatment(font){
-	textToRender = document.getElementById('text-field').value;
-	var ctx = document.getElementById('text-render').getContext('2d');
-	var myText = document.getElementById('text-render').getContext('2d');
-	ctx.clearRect(0,0,1020,290);
-	var compteur = 0;
-	var letterY = 200;
-
-	for (var i = 0, len = textToRender.length; i < len; i++) {
-		var letterX = 80*compteur;
-		if (letterX > 840) {
-			letterY = letterY+160;
-			compteur = 0;
-		};
-		compteur++;
-
-		var myPath = font.getPath(textToRender[i], letterX, letterY, 200);
-		var myClone = font.getPath(textToRender[i], letterX, letterY, 200);
-
-		var points = [];
-		for (var j = 0, lenClone = myClone.commands.length; j < lenClone; j++) {
-			points.push(myClone.commands[j].x);
-			points.push(myClone.commands[j].y);
-			points.push(myClone.commands[j].x1);
-			points.push(myClone.commands[j].y1);
-		}
-
-		var saturation = Math.floor(Math.random()*(85 - 15)+15);
-		var kbis=1;
-
-		for(var k = 0, lenPoints = points.length; k < lenPoints; k+=2) {
-			var diffusionValue = Math.floor((Math.random() * diffusionRange) + 1);
-			var pointX = points[k]+ diffusionValue;
-			var pointY = points[k+1] +diffusionValue;
-
-			if ((document.getElementById('circleDisorderAspect').checked)
-			   ||(document.getElementById('circleOrderAspect').checked)
-			   ||(document.getElementById('letterAspect').checked)) {
-				document.getElementById('fillstrokeaspect').disabled = true;						
-			}else{
-				document.getElementById('aspectstroke').checked = true;
-				document.getElementById('fillstrokeaspect').disabled = false;						
-			};
-
-			if ((document.getElementById('circleDisorderAspect').checked)||(document.getElementById('lineDisorderAspect').checked)) {
-				height = Math.abs(points[k+1]-points[k+3])+4;
-				width = Math.abs(points[k]-points[k+2])+4;
-			}else{
-				var height = Math.abs((letterX)-points[k])/4;
-				var width = Math.abs((letterX)-points[k])/4;						
-			};
-
-			ctx.beginPath();
-
-			if ((document.getElementById('lineDisorderAspect').checked)||(document.getElementById('lineOrderAspect').checked)) {
-				//==================== line
-				ctx.moveTo(pointX-height/2, pointY);
-				ctx.lineTo(pointX + height/2, pointY);
-
-			}else if((document.getElementById('circleDisorderAspect').checked)||(document.getElementById('circleOrderAspect').checked)) {
-	  			//==================== ellipse
-	  			ctx.moveTo(pointX, pointY - height/2);
-	  			ctx.bezierCurveTo(
-	  				pointX + width/2, pointY - height/2,
-	  				pointX + width/2, pointY + height/2,
-	  				pointX, pointY + height/2
-	  			);
-	  			ctx.bezierCurveTo(
-	  				pointX - width/2, pointY + height/2,
-	  				pointX - width/2, pointY - height/2, 
-	  				pointX, pointY - height/2
-	  			);
-
-	  		}else if (document.getElementById('mysteriousAspect').checked) {
-	  			ctx.moveTo(pointX, pointY - height/2);
-	  			ctx.bezierCurveTo(
-	  				pointX + width/2, pointY - height/2,
-	  				pointX + width/2, pointY + height/2,
-	  				pointX, pointY + height/2
-	  			);
-	  			ctx.bezierCurveTo(
-	  				pointX - width/2, pointY + height/2,
-	  				pointX - width/2, pointY - height/2, 
-	  				pointX, pointY - height/2
-	  			);
-
-	  		}else if (document.getElementById('lineAngleAspect').checked) {
-	  			//==================== ellipse
-	  			ctx.moveTo(pointX-height/2, pointY);
-	  			ctx.lineTo(pointX + height/2, pointY+height+k/20);
-
-	  		} else if (document.getElementById('fireSpeedAspect').checked) {
-				var diametre = height; //height & width = same value
-				//==========boucle for 3 circle per point[k]
-				for(var nbrCircle = 0; nbrCircle < 3; nbrCircle++){
-					diametre = diametre/2;
-					ctx.moveTo(pointX +diametre, (pointY - diametre/2));
-					ctx.bezierCurveTo(
-						pointX + diametre/2, pointY - diametre/2,
-						pointX + diametre/2, pointY + diametre/2,
-						pointX, pointY + diametre/2
-					);
-					ctx.bezierCurveTo(
-					  	//speed fire
-					  	pointX - diametre/2 +nbrCircle*5, pointY + diametre/2,
-					  	pointX - diametre/2 +nbrCircle*5, pointY - diametre/2, 
-					  	pointX, pointY - diametre/2
-					);
-				}
-			}else if (document.getElementById('fireAspect').checked) {
-				var diametre = height; //height & width = same value
-				//==========boucle for 3 circle per point[k]
-				for(var nbrCircle = 0; nbrCircle < 3; nbrCircle++){
-					diametre = diametre/2;
-					ctx.moveTo(pointX +diametre, (pointY - diametre/2));
-					ctx.bezierCurveTo(
-						pointX + diametre/2, pointY - diametre/2,
-						pointX + diametre/2, pointY + diametre/2,
-						pointX, pointY + diametre/2
-					);
-					ctx.bezierCurveTo(
-					  	//simple fire
-					  	pointX - diametre/2, pointY + diametre/2,
-					  	pointX - diametre/2, pointY - diametre/2, 
-					  	pointX, pointY - diametre/2
-					);
-				}
-			}else if (document.getElementById('letterAspect').checked) {
-				myPath.draw(myText);
-			};
-
-			if (document.getElementById('gradientletter').checked) {
-				var color = "hsl("+ colorValue+","+saturation+"%, 50%)";
-			}else if (document.getElementById('gradientshape').checked) {
-				var color = "hsl("+ colorValue+",70%, "+k/8+"%)";
-			}else if (document.getElementById('singlecolor').checked) {
-				var color = "hsl("+ colorValue+",70%, 50%)";
-			}else if (document.getElementById('twocolorsgradient').checked) {
-				var fullSaturation = 100;
-				var lum = 75;
-				var secondSaturation = 25;
-				var secondLum = 25;
-					
-				if ((fullSaturation-k)>25) {
-					var color = "hsl("+colorValue+","+(fullSaturation-k)+"%,"+(lum-k/2)+"%)";
-				}else{
-					kbis++;
-					var color = "hsl("+secondColorValue+","+(secondSaturation+kbis)+"%,"+(secondLum+kbis/2)+"%)";
-				};
-
-			}else if (document.getElementById('multicolorgradient').checked) {
-				var entier = Math.abs(100-k/2);
-				var autreentier = Math.abs(k*2);
-				var color = "hsl("+(colorValue+k)+","+autreentier+"%,"+entier+"%)";
-			};
-
-			if (document.getElementById('aspectstroke').checked) {
-				ctx.strokeStyle = color;
-				ctx.stroke();
-
-			}else if (document.getElementById('aspectfill').checked) {
-				ctx.fillStyle = color;
-				ctx.fill();
-			};
-			ctx.lineWidth= 1.5;
-			ctx.closePath();	
-		}
-	}
-}
-
-function clearArea() {
-	var ctx = document.getElementById('text-render').getContext('2d');
-	ctx.clearRect(0, 0, 1020, 290);
-	renderText();
-}
-
-function onReadFile(e) {
-	document.getElementById('bruxFont').checked = false;
-	document.getElementById('garamondFont').checked = false;
-	document.getElementById('kustFont').checked = false;
-	document.getElementById('walterFont').checked = false;
-	document.getElementById('baskervilleFont').checked = false;
-	document.getElementById('cooperFont').checked = false;
-	document.getElementById('londonFont').checked = false;
-	var file = e.target.files[0];
-    	var reader = new FileReader();
-	reader.onload = function(e) {
-	    	try {
-	    		font = opentype.parse(e.target.result);
-	    		onFontLoaded(font);
-	    		showErrorMessage('');
-	    	} catch (err) {
-	    	}
-    	}
-    	reader.readAsArrayBuffer(file);
-}
-
-var fileButton = document.getElementById('file');
-fileButton.addEventListener('change', onReadFile, false);
-
-</script>
+	<script type="text/javascript" src="scripts/variables.js"></script>
+	<script type="text/javascript" src="scripts/objects.js"></script>
+	<script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>
