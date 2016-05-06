@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html><!--
+--><head>
+	<title>TypeTool</title>
+	<meta name="description" content="A super generactive typeface generator test">
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, width=device-width"/>
+	<!-- Note that the internal development server rewrites the JavaScript URL below to build/opentype.js -->
+	<script type="text/javascript" src="dist/opentype.js"></script>
+
+	<link rel="stylesheet" href="base.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body class="body" onload="getValue()" id="body">
+	<div class="canvas">
+		<canvas id="text-render" width="1020" height="290"></canvas>
+	</div>
+	<article class="input col-md-12">
+		<div class="input__text-field col-md-12">
+			<label><input id="text-field" type="text" value="G" placeholder="..." onkeyup="clearArea()"></label>
+		</div>
+		<div class="input__font criteria col-md-12">
+			<form onclick="renderText()">
+				<group>
+					<!--<h2>Font</h2>-->
+					<div class="input__font-item">
+						<input type="radio" name="font" value="bruxFont" id="bruxFont">
+						<label for="bruxFont">Brux</label>
+					</div>
+					<div class="input__font-item">
+						<input type="radio" name="font" value="garamondFont" id="garamondFont">
+						<label for="garamondFont">(Garamond)</label>
+					</div>
+					<div class="input__font-item">
+						<input type="radio" name="font" value="kustFont" id="kustFont">
+						<label for="kustFont">Kust</label>
+					</div>
+					<div class="input__font-item">
+						<input type="radio" name="font" value="walterFont" id="walterFont">
+						<label for="walterFont">Walter</label>
+					</div>
+					<div class="input__font-item">
+						<input type="radio" name="font" value="baskervilleFont" id="baskervilleFont" checked>
+						<label for="baskervilleFont">Baskerville</label>
+					</div>
+					<div class="input__font-item">
+						<input type="radio" name="font" value="cooperFont" id="cooperFont">
+						<label for="cooperFont">Cooper Black</label>
+					</div>
+					<div class="input__font-item">
+						<input type="radio" name="font" value="londonFont" id="londonFont">
+						<label for="londonFont">London</label>
+					</div>
+				</group>
+				<div>
+					<label>Your font<input id="file" type="file"></label>
+				</div>
+			</form>
+		</div>
+		<div class="input__shape criteria col-md-4">
+			<form onclick="renderText()">
+				<group>
+					<!--<h2>Shapes</h2>-->
+					<div class="input__shape-item">
+						<input type="radio" name="aspect" value="circleOrderAspect" id="circleOrderAspect">
+						<label for="circleOrderAspect">Circle</label>
+					</div>
+					<div class="input__shape-item">
+						<input type="radio" name="aspect" value="circleDisorderAspect" id="circleDisorderAspect">
+						<label for="circleDisorderAspect">Circle disorder</label>
+					</div>
+					<div class="input__shape-item">
+						<input type="radio" name="aspect" value="lineOrderAspect" id="lineOrderAspect">
+						<label for="lineOrderAspect">Line</label>
+					</div>
+					<div class="input__shape-item">
+						<input type="radio" name="aspect" value="lineDisorderAspect" id="lineDisorderAspect">
+						<label for="lineDisorderAspect">Line disorder</label>
+					</div>
+					<div class="input__shape-item">
+						<input type="radio" name="aspect" value="lineAngleAspect" id="lineAngleAspect" checked>
+						<label for="lineAngleAspect">Line angle</label>
+					</div>
+					<div class="input__shape-item">
+						<input type="radio" name="aspect" value="fireAspect" id="fireAspect">
+						<label for="fireAspect">Fire</label>
+					</div>
+					<div class="input__shape-item">
+						<input type="radio" name="aspect" value="letterAspect" id="letterAspect">
+						<label for="letterAspect">Letter</label>
+					</div>
+				</group>
+			</form>
+		</div>
+		<div class="input__shape-aspect criteria col-md-1" id="fillstrokeaspect">
+			<form onclick="renderText()">
+				<input type="radio" name="aspect" value="aspectfill" id="aspectfill"> Fill<br>
+				<input type="radio" name="aspect" value="aspectstroke" id="aspectstroke" checked> Stroke
+			</form>
+		</div>
+		<div class="input__color-mode criteria col-md-4">
+			<form onclick="renderText()">
+				<input type="radio" name="gradient" value="singlecolor" id="singlecolor"> Single color
+				<input type="radio" name="gradient" value="gradientletter" id="gradientletter"> Gradient on letter
+				<input type="radio" name="gradient" value="gradientshape" id="gradientshape"> Gradient on shape
+				<input type="radio" name="gradient" value="twocolorsgradient" id="twocolorsgradient" checked> 2 colors gradient
+				<input type="radio" name="gradient" value="multicolorgradient" id="multicolorgradient"> Multicolor gradient // Carnaval
+			</form>
+		</div>
+		<div class="input__color-choice criteria col-md-3">
+			<form>
+				<label><!--Color-->
+					<input type="range" min="0" max="360" step="1" value="323" id="color-value-range" oninput=" getValue()">
+					<span id="color-value">180</span>
+					<input type="range" min="0" max="360" step="1" value="180" id="secondcolor-value-range" oninput=" getValue()">
+					<span id="secondcolor-value">180</span>
+				</label>
+			</form>
+		</div>				
+		<div class="input__position criteria col-md-3">
+			<form>
+				<label><!--Position-->
+					<input type="range" min="0" max="50" step="1" value="0" id="position-value-range" oninput=" getValue()">
+					<span id="position-value">0</span>
+				</label>
+			</form>
+		</div>			
+	</article>
+	<script type="text/javascript" src="scripts/variables.js"></script>
+	<script type="text/javascript" src="scripts/objects.js"></script>
+	<script type="text/javascript" src="scripts/main.js"></script>
+</body>
+</html>
