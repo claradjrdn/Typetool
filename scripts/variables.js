@@ -1,37 +1,52 @@
+var Id = function(id){
+	return document.getElementById( id );
+}
+//===========================================
+
 // canvas
-var ctx = document.getElementById('text-render').getContext('2d');
+var ctx = Id('text-render').getContext('2d');
+var myText = Id('text-render').getContext('2d');
 
 // fonts
 var fontFileName = 'fonts/kust.otf';
+var myClone;
+
+//shape
+var theInputShape;
+var theInputAspect;
 
 // colors
-var saturation = Math.floor(Math.random()*(85 - 15)+15);
-var color;
 var colorValue = 323; 
 var secondColorValue = 180;
-var colorValueSlider = document.getElementById("color-value-range");
-var secondColorValueSlider = document.getElementById("secondcolor-value-range");
+var colorValueSlider = Id("color-value-range");
+var secondColorValueSlider = Id("secondcolor-value-range");
+var theInputColor;
+var color;
 
 // position
-var pointX, pointY, diffusionValue;
 var positionValue = 50;
-var positionValueSlider = document.getElementById("position-value-range");
+var positionValueSlider = Id("position-value-range");
+var pointX, pointY, diffusionValue;
+
+//scale 
+var height;
+var width;
 
 // loop
-var kbis=1;
+var k = 1;
 
 // recuperation des valeurs des curseurs & affichage de ces valeurs
 function getValue() {
 	// color ranges
 	colorValue = colorValueSlider.value;
 	secondColorValue = secondColorValueSlider.value;
-	document.getElementById('color-value').innerHTML = '' + colorValue;
-	document.getElementById('secondcolor-value').innerHTML = '' + secondColorValue;
+	Id('color-value').innerHTML = '' + colorValue;
+	Id('secondcolor-value').innerHTML = '' + secondColorValue;
 	
 	// position range
 	positionValue = positionValueSlider.value;
 	diffusionRange = positionValueSlider.value;
-	document.getElementById('position-value').innerHTML = '' + positionValue;
+	Id('position-value').innerHTML = '' + positionValue;
 
     	renderText();
 }
