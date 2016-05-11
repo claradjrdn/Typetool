@@ -22,7 +22,6 @@
 		<div class="input__font criteria col-md-12">
 			<form onclick="renderText()">
 				<group>
-					<!--<h2>Font</h2>-->
 					<div class="input__font-item">
 						<input type="radio" name="font" value="bruxFont" id="bruxFont">
 						<label for="bruxFont">Brux</label>
@@ -60,7 +59,6 @@
 		<div class="input__shape criteria col-md-4">
 			<form onclick="renderText()">
 				<group>
-					<!--<h2>Shapes</h2>-->
 					<div class="input__shape-item">
 						<input type="radio" name="aspect" value="circleOrderAspect" id="circleOrderAspect">
 						<label for="circleOrderAspect">Circle</label>
@@ -109,7 +107,7 @@
 		</div>
 		<div class="input__color-choice criteria col-md-3">
 			<form>
-				<label><!--Color-->
+				<label>
 					<input type="range" min="0" max="360" step="1" value="323" id="color-value-range" oninput=" getValue()">
 					<span id="color-value">180</span>
 					<input type="range" min="0" max="360" step="1" value="180" id="secondcolor-value-range" oninput=" getValue()">
@@ -119,7 +117,7 @@
 		</div>				
 		<div class="input__position criteria col-md-3">
 			<form>
-				<label><!--Position-->
+				<label>
 					<input type="range" min="0" max="50" step="1" value="0" id="position-value-range" oninput=" getValue()">
 					<span id="position-value">0</span>
 				</label>
@@ -128,6 +126,7 @@
 	</article>
 	<script type="text/javascript" src="scripts/variables.js"></script>
 	<script type="text/javascript" src="scripts/objects.js"></script>
+	<script type="text/javascript" src="scripts/functions.js"></script>
 	<script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>

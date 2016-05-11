@@ -1,8 +1,25 @@
-/// define $ as document.getElementById();
-
 var Shape = function() {
 	
-	this.setShape = function(theInputShape, pointX, pointY, height,width, k){
+	this.setShape = function(shape, font, textToRender, i, pointIndex, letterY, letterX){
+		if (shape.isDisorderedLine()||shape.isOrderedLine()) {
+			theInputShape = "line";
+
+		}else if (shapeChoice.isObliqueLine()) {
+			theInputShape = "obliqueLine";
+
+		}else if(shape.isOrderedEllipse()||shape.isDisorderedEllipse()) {
+			theInputShape = "ellipse";
+
+		}else if (shapeChoice.isOnFire()) {
+			theInputShape = "fire";
+
+		}else if (shape.isNormalLetters()) {
+			theInputShape = "letter";
+			myPath = font.getPath(textToRender[i], letterX, letterY, Math.abs(200-pointIndex/2));
+		};
+	}
+
+	this.drawShape = function(theInputShape, pointX, pointY, height,width, pointIndex){
 		if (theInputShape == "line") {
 			ctx.moveTo(pointX-height/2, pointY);
 			ctx.lineTo(pointX + height/2, pointY);
@@ -22,11 +39,10 @@ var Shape = function() {
 
 		}else if (theInputShape == "obliqueLine") {
 			ctx.moveTo(pointX-height/2, pointY);
-	  		ctx.lineTo(pointX + height/2, pointY+height+k/20);
+	  		ctx.lineTo(pointX + height/2, pointY+height+pointIndex/20);
 		
 		}else if (theInputShape == "fire") {
-			var diametre = height; //height & width = same value
-			//==========boucle for 3 circle per point[k]
+			var diametre = height;
 			for(var nbrCircle = 0; nbrCircle < 3; nbrCircle++){
 				diametre = diametre/2;
 				ctx.moveTo(pointX +diametre, (pointY - diametre/2));
@@ -36,7 +52,6 @@ var Shape = function() {
 					pointX, pointY + diametre/2
 				);
 				ctx.bezierCurveTo(
-				  	//simple fire
 				  	pointX - diametre/2, pointY + diametre/2,
 				  	pointX - diametre/2, pointY - diametre/2, 
 				  	pointX, pointY - diametre/2
@@ -44,56 +59,66 @@ var Shape = function() {
 			}
 
 		}else if (theInputShape == "letter") {
-			// myPath.draw(myText);
+			myPath.draw(ctx);
 		};
 	};
 
 	this.isOrderedEllipse = function(){
-		return document.getElementById('circleOrderAspect').checked;		
+		return Id('circleOrderAspect').checked;		
 	};
 
 	this.isDisorderedEllipse = function(){
-		return document.getElementById('circleDisorderAspect').checked;		
+		return Id('circleDisorderAspect').checked;		
 	};
 	
 	this.isOrderedLine = function(){
-		return document.getElementById('lineOrderAspect').checked;		
+		return Id('lineOrderAspect').checked;	
 	};
 
 	this.isDisorderedLine = function(){
-		return document.getElementById('lineDisorderAspect').checked;		
+		return Id('lineDisorderAspect').checked;		
 	};
 
 	this.isObliqueLine = function(){
-		return document.getElementById('lineAngleAspect').checked;		
+		return Id('lineAngleAspect').checked;		
 	};
 
 	this.isOnFire = function(){
-		return document.getElementById('fireAspect').checked;		
+		return Id('fireAspect').checked;		
 	};
 	
 	this.isNormalLetters = function(){
-		return document.getElementById('letterAspect').checked;		
+		return Id('letterAspect').checked;		
 	};
-
-	/*this.setScale = function() {
-		if (Shape.isDisorderedLine || Shape.isDisorderedEllipse) {
-			var height = Math.abs(points[k+1]-points[k+3])+4;
-			var width = Math.abs(points[k]-points[k+2])+4;
-		};
-		var height = Math.abs((letterX)-points[k])/4;
-		var width = Math.abs((letterX)-points[k])/4;	
-	}*/
 };
 
 var Color = function() {
+	this.setColor = function(color){
+		if (colorChoice.isDifferentByLetter()) {
+			theInputColor = "differentByLetter";
+		}else if (colorChoice.isAColorToWhiteGradient()) {
+			theInputColor = "colorToWhiteGradient";
+		}else if (colorChoice.isOneColor()) {
+			theInputColor = "oneColor";
+		}else if (colorChoice.isATwoColorsGradient()) {
+			theInputColor = "twoColorsGradient";
+		}else if (colorChoice.isMulticolor()) {
+			theInputColor = "multicolor";
+		};
+	}
 
-	this.setColor = function(theInputColor, k, kbis, colorValue, saturation){
+	this.useColor = function(theInputColor, pointIndex, k, colorValue, saturation){
+		//if saturation defined here then random saturation on each shape, not each letter
+		// TO DO : add a color mode 
+		// var saturation = Math.floor(Math.random()*(85 - 15)+15);
 		if (theInputColor == "differentByLetter") {
 			color = "hsl("+ colorValue+","+saturation+"%, 50%)";
 		
 		}else if (theInputColor == "colorToWhiteGradient") {
-			color = "hsl("+ colorValue+",70%, "+k/8+"%)";
+			var abs = Math.abs(100 - pointIndex/8);
+			color = "hsl("+ colorValue+",70%, "+abs+"%)";
+			//black gradient
+			//color = "hsl("+ colorValue+",70%, "+pointIndex/8+"%)";
 
 		}else if (theInputColor == "oneColor") {
 			color = "hsl("+ colorValue+",70%, 50%)";
@@ -103,100 +128,103 @@ var Color = function() {
 			var lum = 75;
 			var secondSaturation = 25;
 			var secondLum = 25;
-				
-			if ((fullSaturation-k)>25) {
-				color = "hsl("+colorValue+","+(fullSaturation-k)+"%,"+(lum-k/2)+"%)";
+
+			if ((fullSaturation-pointIndex)>25) {
+				console.log(pointIndex);
+				color = "hsl("+colorValue+","+(fullSaturation-pointIndex)+"%,"+(lum-pointIndex/2)+"%)";
 			}else{
-				kbis++;
-				color = "hsl("+secondColorValue+","+(secondSaturation+kbis)+"%,"+(secondLum+kbis/2)+"%)";
+				color = "hsl("+secondColorValue+","+Math.abs((secondSaturation+(pointIndex-74)/4))+"%,"+(secondLum+(pointIndex-74)/4)+"%)";
+				console.log(pointIndex-74);
+				console.log(color);
 			};
+			console.log(color);
 
 		}else if (theInputColor == "multicolor") {
-			var entier = Math.abs(100-k/2);
-			var autreentier = Math.abs(k*2);
-			color = "hsl("+(colorValue+k)+","+autreentier+"%,"+entier+"%)";
+			var entier = Math.abs(100-pointIndex/2);
+			var autreentier = Math.abs(pointIndex*2);
+			color = "hsl("+(colorValue+pointIndex)+","+autreentier+"%,"+entier+"%)";
 		};
 		return color;
 	};
 
 	this.isOneColor = function(){
-		return document.getElementById('singlecolor').checked;		
+		return Id('singlecolor').checked;		
 	}
 
 	this.isDifferentByLetter = function(){
-		return document.getElementById('gradientletter').checked;		
+		return Id('gradientletter').checked;		
 	}
 	
 	this.isATwoColorsGradient = function(){
-		return document.getElementById('twocolorsgradient').checked;		
+		return Id('twocolorsgradient').checked;		
 	}
 	
 	this.isAColorToWhiteGradient = function(){
-		return document.getElementById('gradientshape').checked;		
+		return Id('gradientshape').checked;		
 	}
 
 	this.isMulticolor = function(){
-		return document.getElementById('multicolorgradient').checked;		
+		return Id('multicolorgradient').checked;		
 	}
 };
 
 var Aspect = function(){
-	this.setAspect = function(theInputAspect){
+
+	this.setAspect = function(){
+		if (aspectChoice.isStroke()) {
+			theInputAspect = "stroke";
+		}else if (aspectChoice.isFill()) {
+			theInputAspect = "fill";
+		};
+	}
+
+	this.useAspect = function(theInputAspect){
 		if (theInputAspect == "stroke") {
 			ctx.strokeStyle = color;
 			ctx.stroke();		
 
 		}else if (theInputAspect == "fill") {
+			ctx.strokeStyle = color;
+			ctx.stroke();	
 			ctx.fillStyle = color;
 			ctx.fill();
 		}
 	}
 
 	this.isFill = function(){
-		return document.getElementById('aspectfill').checked;		
+		return Id('aspectfill').checked;		
 	}
 	this.isStroke = function(){
-		return document.getElementById('aspectstroke').checked;		
+		return Id('aspectstroke').checked;		
 	}
 };
 
 var Font = function() {
 	this.isBrux = function(){
-		return document.getElementById('bruxFont').checked;		
+		return Id('bruxFont').checked;		
 	}
 
 	this.isBaskerville = function(){
-		return document.getElementById('baskervilleFont').checked;		
+		return Id('baskervilleFont').checked;		
 	}
 	
 	this.isGaramond = function(){
-		return document.getElementById('garamondFont').checked;		
+		return Id('garamondFont').checked;		
 	}
 	
 	this.isKust = function(){
-		return document.getElementById('kustFont').checked;		
+		return Id('kustFont').checked;		
 	}
 
 	this.isWalter = function(){
-		return document.getElementById('walterFont').checked;		
+		return Id('walterFont').checked;		
 	}
 	
 	this.isCooperBlack = function(){
-		return document.getElementById('cooperFont').checked;		
+		return Id('cooperFont').checked;		
 	}
 	
 	this.isLondon = function(){
-		return document.getElementById('londonFont').checked;		
+		return Id('londonFont').checked;		
 	}
 };
-
-var setPositionLetter = function(){
-
-};
-
-var setShapePosition = function(k, points){
-	diffusionValue = Math.floor((Math.random() * diffusionRange) + 1);
-	pointX = points[k]+ diffusionValue;
-	pointY = points[k+1] +diffusionValue;
-	return pointX, pointY;
-}
