@@ -1,0 +1,28 @@
+{
+  "name": "typetool",
+  "description": "Experimental generative typeface editor",
+  "main": [
+    "src/home.html",
+    "css/base.css"
+  ],
+  "dependencies": {
+    "opentype": "~0.6.1"
+  },
+  "devDependencies": {
+  },
+  "keywords": [
+    "typeface",
+    "opentype",
+    "graphic",
+    "art code",
+    "generative",
+    "creative code",
+    "font"
+  ],
+  "authors": [
+    "Clara Dujardin <dujardinclara3@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+  ]
+}

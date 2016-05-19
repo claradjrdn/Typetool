@@ -1,0 +1,34 @@
+.list-icon {
+
+}
+
+.list-icon--vertical {
+	display: flex; height: 96vh;
+    	flex-wrap: wrap;
+    	align-items: flex-end;
+    	justify-content: flex-end;
+}
+
+.list-icon--vertical .list-icon__item {
+	display: block;
+	flex: 1 1 100%; /*height: 70px;*/
+}
+
+.list-icon--alt {
+	text-align: center;
+	background: #efefef;
+}
+
+.list-icon__item {
+	display: inline-block; padding: 10px 0;
+	text-align: center;
+}
+
+.list-icon__item img {
+	margin: 10px;
+	min-width: 30px;
+}
+
+.list-icon__item > input {
+	display: none;
+}
