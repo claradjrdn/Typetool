@@ -1,0 +1,39 @@
+@font-face {
+    font-family: StempelGaramond-Bold;
+    src: url(../fonts/garamondFont.ttf);
+}
+
+@font-face {
+    font-family: baskerville;
+    src: url(../fonts/baskervilleFont.ttf);
+}
+
+@font-face {
+    font-family: brux;
+    src: url(../fonts/bruxFont.ttf);
+}
+
+@font-face {
+    font-family: cooper;
+    src: url(../fonts/cooperFont.ttf);
+}
+
+@font-face {
+    font-family: kust;
+    src: url(../fonts/kustFont.otf);
+}
+
+@font-face {
+    font-family: london;
+    src: url(../fonts/londonFont.ttf);
+}
+
+@font-face {
+    font-family: patrick;
+    src: url(../fonts/PatrickHandSC-Regular.ttf);
+}
+
+@font-face {
+    font-family: walter;
+    src: url(../fonts/walterFont.ttf);
+}

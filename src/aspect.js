@@ -1,18 +1,20 @@
 var Aspect = function(){
 	var theInputAspect;
-	this.setAspect = function(){
-		if (aspectChoice.isStroke()) {
-			theInputAspect = "stroke";
-		}else if (aspectChoice.isFill()) {
-			theInputAspect = "fill";
+	
+	this.getAspect = function(){
+
+		if ($('aspectfill').checked) {
+			return 'isFill';
 		};
+		return 'isStroke';
 	}
 	this.useAspectByColor = function(color){
-		if (theInputAspect == "stroke") {
+		theInputAspect = this.getAspect();
+		if (theInputAspect == "isStroke") {
 			ctx.strokeStyle = color;
 			ctx.stroke();		
 
-		}else if (theInputAspect == "fill") {
+		}else if (theInputAspect == "isFill") {
 			ctx.strokeStyle = color;
 			ctx.stroke();	
 			ctx.fillStyle = color;
@@ -20,29 +22,12 @@ var Aspect = function(){
 		}
 	}
 
-	this.isFill = function(){
-		return $('aspectfill').checked;		
-	}
-	this.isStroke = function(){
-		return $('aspectstroke').checked;		
-	}
-	
-	this.setDefaultAspectOptions = function(){
-		$('aspectfill').disabled = false;
-		$('aspectstroke').disabled = false;
-	}
-	this.setAspectOptions = function(){
-		if (shapeChoice.isDisorderedEllipse()
-		   || shapeChoice.isOrderedEllipse()) {
-		   	return this.setDefaultAspectOptions();
-		}else if(shapeChoice.isNormalLetters()){
-			var a = this.setDefaultAspectOptions();
-			var b = setDisabledOptions('aspectstroke');
-			return a && b;
+	this.freezeAspectByShape = function(shapeType){
+		if(shapeType == "isNormalLetters"){
+			$('aspectfill').checked = true;
+		}else if (shapeType == "isDisorderedLine" || shapeType == "isOrderedLine" || shapeType == "isObliqueLine" || shapeType == "isOnFire") {
+			$('aspectfill').checked = false;
 		};
-		var a = this.setDefaultAspectOptions();
-		var b = setDisabledOptions('aspectfill');
-		return a && b;
 	}
 };
 

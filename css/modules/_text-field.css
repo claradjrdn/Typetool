@@ -1,0 +1,24 @@
+.text-field,
+.text-field > label,
+.text-field input {
+	background-color: #22b573; color: white;
+	border: none;	
+}
+
+.text-field {
+	padding: 10px 0 0 15px;
+}
+
+.text-field > label,
+.text-field input {
+	width: 100%;
+}
+
+.text-field input::-webkit-input-placeholder {
+	color: rgba(255, 255, 255, 0.2);
+}
+
+input[type=text] {
+	font-size: 22px;
+	outline: 0;
+}

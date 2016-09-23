@@ -1,97 +1,98 @@
 var Color = function() {
-	var theInputColor;
-	var color;
-	var colorValue = 323;
-	var secondColorValue = 180;
+	var colorMode, color;
+	var colorRange, secondColorRange;
 
-	this.setColorMode = function(color){
-		if (colorChoice.isDifferentByLetter()) {
-			theInputColor = "differentByLetter";
-		}else if (colorChoice.isAColorToWhiteGradient()) {
-			theInputColor = "colorToWhiteGradient";
-		}else if (colorChoice.isOneColor()) {
-			theInputColor = "oneColor";
-		}else if (colorChoice.isATwoColorsGradient()) {
-			theInputColor = "twoColorsGradient";
-		}else if (colorChoice.isMulticolor()) {
-			theInputColor = "multicolor";
+	this.colorRangeListener = function(){
+		colorRange = $("color-value-range").value;
+		secondColorRange = $("secondcolor-value-range").value;
+
+		renderText();
+	}
+
+	this.getColorMode = function(){
+		if ($('singlecolor').checked) {
+			return 'isOneColor';
+		};
+		if ($('gradientletter').checked) {
+			return 'isDifferentByLetter';
+		};
+		if ($('twocolorsgradient').checked) {
+			return 'isATwoColorsGradient';
+		};
+		if ($('gradientshape').checked) {
+			return 'isAColorToWhiteGradient';
+		};
+		if ($('multicolorgradient').checked) {
+			return 'isMulticolor';
 		};
 	}
 
-	this.colorRangeListener = function(){
-		var colorValueSlider = $("color-value-range");
-		var secondColorValueSlider = $("secondcolor-value-range");
-		colorValue = colorValueSlider.value;
-		secondColorValue = secondColorValueSlider.value;
+	this.getColor = function(shapeIndex, saturationByLetter, colorChoice){
+		var hue;
+		var saturation;
+		var luminosity;
 
-		renderText();
-		this.displayColorValues();
-	}
+		var increase = shapeIndex; 
+		var slowIncrease = shapeIndex / 2; 
+		var speedIncrease = shapeIndex * 2;
 
-	this.displayColorValues = function() {
-		$('color-value').innerHTML = '' + colorValue;
-		$('secondcolor-value').innerHTML = '' + secondColorValue;		
-	}
+		colorMode = this.getColorMode();
 
-	this.getColor = function(pointIndex, saturation){
 		//if saturation defined here then random saturation on each shape, not each letter
 		// TO DO : add a color mode 
-		// var saturation = Math.floor(Math.random()*(85 - 15)+15);
-		if (theInputColor == "differentByLetter") {
-			color = "hsl("+ colorValue+","+saturation+"%, 50%)";
+		// saturation = Math.floor(Math.random()*(85 - 15)+15);
+		if (colorMode == "isDifferentByLetter") {
+			hue = colorRange;
+			saturation = saturationByLetter;
+			luminosity = 50;
 		
-		}else if (theInputColor == "colorToWhiteGradient") {
-			var abs = Math.abs(100 - pointIndex/8);
-			color = "hsl("+ colorValue+",70%, "+abs+"%)";
-			//black gradient
-			//color = "hsl("+ colorValue+",70%, "+pointIndex/8+"%)";
+		}else if (colorMode == "isAColorToWhiteGradient") {
+			hue = colorRange;
+			saturation = 70;
+			luminosity = Math.abs(100 - slowIncrease / 2);
 
-		}else if (theInputColor == "oneColor") {
+			//pour black gradient
+			// luminosity = pointIndex/8;
+
+		}else if (colorMode == "isOneColor") {
 			//good one
-			//color = "hsl("+ colorValue+",70%, 50%)";
+			// hue = colorRange;
+			// saturation = 70;
+			// luminosity = 50;
 			
 			//gradient test
 			color = ctx.createLinearGradient(0,0,900,0);
-			color.addColorStop(0,"hsl("+ secondColorValue+",70%, 50%)");
-			color.addColorStop(1,"hsl("+ colorValue+",70%, 50%)");
+			color.addColorStop(0, "hsl("+ secondColorRange + ",70%, 50%)");
+			color.addColorStop(1, "hsl("+ colorRange + ",70%, 50%)");
+			return color;
 			
-		}else if (theInputColor == "twoColorsGradient") {
+		}else if (colorMode == "isATwoColorsGradient") {
 			var fullSaturation = 100;
-			var lum = 75;
-			var secondSaturation = 25;
-			var secondLum = 25;
+			var breakpointSaturation = 25;
+			var highLuminosity = 75;
+			var lowLuminosity = 25;
 
-			if ((fullSaturation-pointIndex)>25) {
-				color = "hsl("+colorValue+","+(fullSaturation-pointIndex)+"%,"+(lum-pointIndex/2)+"%)";
+			if ( (fullSaturation - increase) > breakpointSaturation) {
+				hue = colorRange;
+				saturation = fullSaturation - shapeIndex;
+				luminosity = highLuminosity - slowIncrease;
 			}else{
-				color = "hsl("+secondColorValue+","+Math.abs((secondSaturation+(pointIndex-74)/4))+"%,"+(secondLum+(pointIndex-74)/4)+"%)";
+				var resetShapeIndex = shapeIndex - ( fullSaturation - breakpointSaturation ) / 2;
+				increase = resetShapeIndex;
+				slowIncrease = resetShapeIndex / 2;
+				speedIncrease = resetShapeIndex * 2;
+
+				hue = secondColorRange;
+				saturation = Math.abs( breakpointSaturation + slowIncrease );
+				luminosity = lowLuminosity + slowIncrease;
 			};
 
-		}else if (theInputColor == "multicolor") {
-			var entier = Math.abs(100-pointIndex/2);
-			var autreentier = Math.abs(pointIndex*2);
-			color = "hsl("+(colorValue+pointIndex)+","+autreentier+"%,"+entier+"%)";
+		}else if (colorMode == "isMulticolor") {
+			hue = colorRange + shapeIndex;
+			luminosity = Math.abs( 100 - slowIncrease );
+			saturation = Math.abs( speedIncrease );
 		};
+		color = "hsl(" + hue + "," + saturation + "%," + luminosity + "%)";
 		return color;
 	};
-
-	this.isOneColor = function(){
-		return $('singlecolor').checked;		
-	}
-
-	this.isDifferentByLetter = function(){
-		return $('gradientletter').checked;		
-	}
-	
-	this.isATwoColorsGradient = function(){
-		return $('twocolorsgradient').checked;		
-	}
-	
-	this.isAColorToWhiteGradient = function(){
-		return $('gradientshape').checked;		
-	}
-
-	this.isMulticolor = function(){
-		return $('multicolorgradient').checked;		
-	}
 };
