@@ -1,0 +1,26 @@
+Generative Typeface Editor
+
+depedencies : 
+	- bower
+	- opentype.js
+
+structure : 
+	- /css/ (css files...)
+	- /dist/ (js libraries)
+	- /fonts/ (default fonts for the editor)
+	- /src/ (javascript files)
+	- home.html (run the program)
+
+
+==========================
+
+Typetool is an experimental project of generative typefaces based on the opentype.js library. You will find here the original code of the GENERATIVE TYPEFACE EDITOR that I made. I focused my work on two sides : 
+
+---- the technical side (the structure of my javascript code: make it maintanable, readable and as clean as possible)
+---- the artistic side (the way that we can play with the typefaces and create original, beautiful and kind of weird visuals)
+
+==========================
+
+
+So I invite you to look at my SRC FOLDER which contain the most interesting part of the project. I also invite you to visit my tumblr codemytype.tumblr.com. It's a kind of work in progress gallery, you will find all the differents funny/beautiful/interesting visuals that I made deliberately or not (mistake can be pretty) with this tool during the creation of it.
+You will also be able to live test the editor on my portfolio soon : claradujardin.fr
