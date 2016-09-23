@@ -1,0 +1,19 @@
+.button {
+	position: relative; margin: 0 0 20px 0;
+}
+
+.button input[type=file] {
+	display: none;
+}
+
+.button > label::after {
+	content: 'your own font';
+	position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+	width: 120px; height: 40px; padding: 10px 15px;
+	background: #fff; border: #22b573 solid 2px; border-radius: 8px;
+}
+
+.button > label:hover::after {
+	background: #ececec; border: #22b573 solid 2px; border-radius: 8px;
+	cursor: pointer;
+}

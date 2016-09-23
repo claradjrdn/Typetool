@@ -1,0 +1,72 @@
+.list-icon--vertical {
+	display: flex; //height: 96vh;
+    	flex-wrap: wrap;
+    	align-items: flex-end;
+    	justify-content: flex-end;
+}
+
+.list-icon--vertical > div {
+	flex: 1 1 100%;
+}
+
+.list-icon--alt {
+	text-align: center;
+	background: #efefef;
+}
+.list-icon--alt > .list-icon__item {
+	position: relative;
+}
+
+.list-icon--alt input:checked + label > img {
+	width: 40px; height: auto;
+}
+
+.list-icon--alt input:checked + label:after {
+	content: ''; width: 0; height: 0; 
+	position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+	border-left: 10px solid transparent; border-right: 10px solid transparent;  
+	border-top: 10px solid #efefef;
+}
+
+.list-icon__item {
+	display: inline-block; padding: 10px 0;
+	text-align: center;
+}
+
+.list-icon__item > input {
+	display: none;
+}
+
+.list-icon__item > label {
+	margin: 10px;
+	min-width: 30px;
+}
+
+.list-icon__item > input:not([disabled]) + label:hover {
+	cursor: pointer;
+}
+
+.list-icon__item > input:disabled + label {
+	stroke: #efefef;
+	fill: #efefef;
+}
+
+.list-icon__item label:hover {
+	fill: #515151;
+}
+
+.list-icon__item > input:checked + label {
+	fill: #22b573;
+}
+
+.list-icon__item--alt label:hover {
+	stroke: #515151;
+}
+
+.list-icon__item--alt > input + label {
+	stroke: #161616;
+}
+
+.list-icon__item--alt > input:checked + label {
+	stroke: #22b573;
+}

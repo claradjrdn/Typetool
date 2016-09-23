@@ -1,0 +1,35 @@
+.grid-column-1 {
+	flex: 1;	
+}
+
+.grid-column-2 {
+	flex: 2;	
+}
+
+.grid-column-3 {
+	flex: 3;	
+}
+
+.grid-column-3--overlaping {
+	z-index: 1;
+}
+
+.grid-column--half {
+	width: 50%;
+}
+
+.grid-column--quarter {
+	width: 25%;
+}
+
+.grid-row--small {
+	height: 50px;	
+}
+
+.grid-row--medium {
+	height: 175px;
+}
+
+.grid-row--large {
+	height: 96vh;
+}

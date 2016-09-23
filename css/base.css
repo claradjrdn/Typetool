@@ -1,0 +1,43 @@
+.body {
+	max-width: 1400px; margin: auto;
+}
+
+canvas#text-render {
+	display: block; margin: auto;
+}
+
+.test svg {
+	width: 60px; height: 30px; margin-top: 5px;
+}
+
+#aspectfill:checked + label circle:nth-of-type(1) {
+	/*fill: white; stroke: #22b573;*/ r: 30%;
+
+	-webkit-transition: all 0.25s ease-out;
+	-moz-transition: all 0.25s ease-out;
+	-ms-transition: all 0.25s ease-out;
+	-o-transition: all 0.25s ease-out;
+	transition: all 0.25s ease-out;
+}
+
+#aspectfill:checked + label circle:nth-of-type(2) {
+	/*fill: #22b573; stroke: none;*/ r: 15%;
+
+	-webkit-transition: all 0.25s ease-out;
+	-moz-transition: all 0.25s ease-out;
+	-ms-transition: all 0.25s ease-out;
+	-o-transition: all 0.25s ease-out;
+	transition: all 0.25s ease-out;
+}
+
+#aspectfill + label circle {
+	-webkit-transition: all 0.25s ease-out;
+	-moz-transition: all 0.25s ease-out;
+	-ms-transition: all 0.25s ease-out;
+	-o-transition: all 0.25s ease-out;
+	transition: all 0.25s ease-out;
+}
+
+.test > input {
+	display: none;
+}
